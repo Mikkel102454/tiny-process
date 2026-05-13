@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "TinyProcess Electron App",
   "main": "main.js",
-  "author": "Mikkel",
+  "author": {
+    "name": "Mikkel",
+    "email": "mikkeliversen09@outlook.dk"
+  },
   "license": "MIT",
 
   "scripts": {
