@@ -1,0 +1,53 @@
+{
+  "name": "tiny-process",
+  "version": "1.0.0",
+  "description": "TinyProcess Electron App",
+  "main": "main.js",
+  "author": "Mikkel",
+  "license": "MIT",
+
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+
+  "devDependencies": {
+    "electron": "^36.0.0",
+    "electron-builder": "^26.0.12"
+  },
+
+  "build": {
+    "appId": "trp.solutions.tiny_process",
+
+    "productName": "TinyProcess",
+
+    "directories": {
+      "output": "dist"
+    },
+
+    "files": [
+      "**/*",
+      "!dist/*",
+      "!node_modules/.cache/*"
+    ],
+
+    "mac": {
+      "target": "dmg",
+      "icon": "icon.icns"
+    },
+
+    "win": {
+      "target": "nsis",
+      "icon": "icon.ico"
+    },
+
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "icon": "icon.png",
+      "category": "Utility"
+    }
+  }
+}
