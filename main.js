@@ -3,6 +3,7 @@ const path = require('path');
 
 let mainWindow;
 let tray;
+let isQuitting = false;
 
 function createWindow() {
     mainWindow = new BrowserWindow({
@@ -15,10 +16,11 @@ function createWindow() {
 
     mainWindow.loadFile('index.html');
 
-    // Hide instead of close
     mainWindow.on('close', (event) => {
-        event.preventDefault();
-        mainWindow.hide();
+        if (!isQuitting) {
+            event.preventDefault();
+            mainWindow.hide();
+        }
     });
 }
 
@@ -30,12 +32,25 @@ app.whenReady().then(() => {
     const contextMenu = Menu.buildFromTemplate([
         {
             label: 'Show App',
-            click: () => mainWindow.show()
+            click: () => {
+                mainWindow.show();
+                mainWindow.focus();
+            }
+        },
+        {
+            label: 'Hide App',
+            click: () => {
+                mainWindow.hide();
+            }
+        },
+        {
+            type: 'separator'
         },
         {
             label: 'Quit',
             click: () => {
-                app.exit();
+                isQuitting = true;
+                app.quit();
             }
         }
     ]);
@@ -44,8 +59,28 @@ app.whenReady().then(() => {
     tray.setContextMenu(contextMenu);
 
     tray.on('click', () => {
-        mainWindow.isVisible()
-            ? mainWindow.hide()
-            : mainWindow.show();
+        if (mainWindow.isVisible()) {
+            mainWindow.hide();
+        } else {
+            mainWindow.show();
+            mainWindow.focus();
+        }
     });
+
+    app.on('activate', () => {
+        if (mainWindow) {
+            mainWindow.show();
+            mainWindow.focus();
+        } else {
+            createWindow();
+        }
+    });
+});
+
+app.on('window-all-closed', (event) => {
+    event.preventDefault();
+});
+
+app.on('before-quit', () => {
+    isQuitting = true;
 });
